@@ -3,7 +3,7 @@ using System.CodeDom.Compiler;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
+//using System.Runtime.Loader;  //Switch to .NET framework friendly mechanism
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -123,7 +123,8 @@ namespace QuantSA.Core.Products
 
             var assemblyName = Path.GetRandomFileName();
             var refPaths = new[] {
-                GetAssemblyByName("System.Private.CoreLib"),
+                //GetAssemblyByName("System.Private.CoreLib"), //Switch to .NET framework friendly mechanism
+                GetAssemblyByName("mscorlib"),
                 GetAssemblyByName("System.Runtime"),
                 GetAssemblyByName("System.Collections"),
                 GetAssemblyByName("QuantSA.Shared"),
@@ -157,7 +158,8 @@ namespace QuantSA.Core.Products
                 else
                 {
                     ms.Seek(0, SeekOrigin.Begin);
-                    assembly = AssemblyLoadContext.Default.LoadFromStream(ms);
+                    //assembly = AssemblyLoadContext.Default.LoadFromStream(ms);  //Switch to .NET framework friendly mechanism
+                    assembly = Assembly.Load(ms.ToArray());
                 }
             }
 
