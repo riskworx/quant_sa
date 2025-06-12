@@ -3,6 +3,7 @@
 Before submitting your pull request, please ensure the following are complete:
 
 ## 🔍 Self Review
+- [ ] Confirmed that the destination branch is correct.
 - [ ] I have reviewed my own code carefully.
 - [ ] I have removed any debugging code or print statements.
 - [ ] Code changes are scoped to the purpose of this PR (no unrelated changes).
