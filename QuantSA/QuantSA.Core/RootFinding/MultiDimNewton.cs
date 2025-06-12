@@ -6,7 +6,7 @@ using QuantSA.Core.Optimization;
 namespace QuantSA.Core.RootFinding
 {
     /// <summary>
-    /// numerical implementation of a multidimensional Newton's root finder.
+    /// Numerical implementation of a multidimensional Newton's root finder.
     /// </summary>
     public class MultiDimNewton : IVectorRootFinder
     {
@@ -21,10 +21,10 @@ namespace QuantSA.Core.RootFinding
         }
 
         /// <summary>
-        /// find the root given an objective function and given initial guess.
+        /// Find the root given an objective function and given initial guess.
         /// </summary>
-        /// <param name="objective">the objective function to minimize</param>
-        /// <param name="initialGuess">the initial guess</param>
+        /// <param name="objective">The objective function to minimize</param>
+        /// <param name="initialGuess">The initial guess</param>
         /// <returns></returns>
         public VectorMinimizationResult FindRoot(IObjectiveVectorFunction objective, Vector<double> initialGuess)
         {
