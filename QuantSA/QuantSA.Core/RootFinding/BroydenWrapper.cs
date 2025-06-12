@@ -11,7 +11,6 @@ namespace QuantSA.Core.RootFinding
     /// </summary>
     public class BroydenWrapper : IVectorRootFinder
     {
-
         /// <summary>
         /// Find the root given an objective function and given initial guess.
         /// </summary>
