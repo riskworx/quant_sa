@@ -5,6 +5,9 @@ using QuantSA.Core.Optimization;
 
 namespace QuantSA.Core.RootFinding
 {
+    /// <summary>
+    /// numerical implementation of a multidimensional Newton's root finder.
+    /// </summary>
     public class MultiDimNewton : IVectorRootFinder
     {
         private readonly double _convergenceTolerance;
