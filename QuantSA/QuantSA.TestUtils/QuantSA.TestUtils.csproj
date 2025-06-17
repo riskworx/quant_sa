@@ -5,13 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Accord.Math" Version="3.8.0" />
-    <PackageReference Include="Accord.Statistics" Version="3.8.0" />
-    <PackageReference Include="log4net" Version="2.0.8" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
+    <ProjectReference Include="..\QuantSA.CoreExtensions\QuantSA.CoreExtensions.csproj" />
     <ProjectReference Include="..\QuantSA.Core\QuantSA.Core.csproj" />
     <ProjectReference Include="..\QuantSA.Shared\QuantSA.Shared.csproj" />
   </ItemGroup>

@@ -9,7 +9,7 @@ using QuantSA.Core.Primitives;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.Debug;
 using QuantSA.Shared.MarketData;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.Rates;
 
 namespace QuantSA.Valuation.Test

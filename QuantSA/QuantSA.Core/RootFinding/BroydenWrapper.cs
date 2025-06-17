@@ -11,12 +11,6 @@ namespace QuantSA.Core.RootFinding
     /// </summary>
     public class BroydenWrapper : IVectorRootFinder
     {
-        /// <summary>
-        /// Find the root given an objective function and given initial guess.
-        /// </summary>
-        /// <param name="objective">The objective function to minimize</param>
-        /// <param name="initialGuess">The initial guess</param>
-        /// <returns></returns>
         public VectorMinimizationResult FindRoot(IObjectiveVectorFunction objective, Vector<double> initialGuess)
         {
             var function = new FunctionEvaluator(objective);
