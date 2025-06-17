@@ -1,0 +1,46 @@
+name: .NET Build & Test (.NET Framework + .NET Standard)
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+    types: [ opened, synchronize, reopened, ready_for_review ]
+
+jobs:
+  build:
+    name: Build and Test on Windows
+    runs-on: windows-latest
+
+    env:
+      # Optional: speeds up MSBuild
+      MSBUILDDISABLENODEREUSE: 1
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v1
+        
+      - name: Cache NuGet packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.nuget/packages
+            QuantSA/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.config', '**/*.csproj', '**/global.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+      
+      - name: Restore NuGet packages
+        run: nuget restore QuantSA\QuantSA.Main.sln
+
+      - name: Build solution
+        run: dotnet build QuantSA\QuantSA.Main.sln --configuration Release
+        
+
+      - name: Run Tests (.NET Framework MSTest)
+        run: |
+          dotnet test QuantSA\QuantSA.Main.sln --configuration Release --no-build --verbosity normal --logger:"console;verbosity=detailed"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
