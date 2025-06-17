@@ -35,5 +35,10 @@ namespace QuantSA.Core.Tests.RootFinding
             t.EvaluateAt(solution.MinimizingPoint);
             Assert.AreEqual(0.0, t.Value.AbsoluteMaximum(), 1e-6);
         }
+
+        [TestMethod]
+        public void Robs_Error_Test_Function()
+        {
+        }
     }
 }
