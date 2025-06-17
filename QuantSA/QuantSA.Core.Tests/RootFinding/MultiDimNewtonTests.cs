@@ -37,9 +37,8 @@ namespace QuantSA.Core.Tests.RootFinding
         }
 
         [TestMethod]
-        public void error()
+        public void Error_Test_Function()
         {
-
         }
     }
 }
