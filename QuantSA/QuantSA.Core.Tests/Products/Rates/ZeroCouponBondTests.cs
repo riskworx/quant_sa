@@ -11,17 +11,14 @@ namespace QuantSA.Core.Tests.Products.Rates
         [TestMethod]
         public void ZeroCouponBond_ReturnsSingleCashflow()
         {
-            // Arrange
             var maturity = new Date(2028, 12, 31);
             double notional = 1000000;
             var currency = new Currency("ZAR");
 
             var bond = new ZeroCouponBond(maturity, notional, currency);
 
-            // Act
             var cashflows = bond.GetCFs();
 
-            // Assert
             Assert.AreEqual(1, cashflows.Count);
             Assert.AreEqual(maturity, cashflows[0].Date);
             Assert.AreEqual(notional, cashflows[0].Amount);
