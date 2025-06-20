@@ -35,5 +35,15 @@ namespace QuantSA.Shared.Test.Dates
             Assert.IsFalse(_calendar.IsHoliday(_end));
             Assert.IsTrue(_calendar.IsHoliday(_start));
         }
+
+        [TestMethod]
+        public void IsEndOfMonth_ReturnsCorrectly()
+        {
+            var isLastDay = new Date(2024, 1, 31);
+            var isNotLastDay = new Date(2024, 1, 30);
+
+            Assert.IsTrue(_calendar.IsEndOfMonth(isLastDay));
+            Assert.IsFalse(_calendar.IsEndOfMonth(isNotLastDay));
+        }
     }
 }
