@@ -24,7 +24,7 @@ namespace QuantSA.Shared.Test.Dates
         public void BusinessDaysBetween_ReturnsCorrectly()
         {
 
-            int result = _calendar.BusinessDaysBetween(_start, _end);
+            var result = _calendar.BusinessDaysBetween(_start, _end);
             
             Assert.AreEqual(4, result);
         }
