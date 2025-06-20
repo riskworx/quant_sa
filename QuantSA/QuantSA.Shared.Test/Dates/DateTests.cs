@@ -38,6 +38,17 @@ namespace QuantSA.Shared.Test.Dates
             Assert.AreEqual(29, Date.DaysInMonth(2020, 2));
             Assert.AreEqual(28, Date.DaysInMonth(2023, 2));
         }
+
+        [TestMethod]
+        public void EndOfMonth_ReturnsCorrectly()
+        {
+            var midMonth = new Date(2023, 3, 15);
+            var endOfMonth = Date.EndOfMonth(midMonth);
+
+            Assert.AreEqual(31, endOfMonth.Day);
+            Assert.AreEqual(3, endOfMonth.Month);
+            Assert.AreEqual(2023, endOfMonth.Year);
+        }
     }
 }
 
