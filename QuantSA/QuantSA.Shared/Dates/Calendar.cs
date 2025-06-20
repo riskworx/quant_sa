@@ -80,7 +80,7 @@ namespace QuantSA.Shared.Dates
         /// </summary>
         public bool IsEndOfMonth(Date d)
         {
-
+            return d == EndOfMonth(d);
         }
 
         /// <summary>
