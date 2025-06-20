@@ -14,7 +14,9 @@ namespace QuantSA.Shared.Test.Dates
             var calender = new Calendar("TestCalender");
             var start = new Date(2024, 6, 3);
             var end = new Date(2024, 6, 7);
+
             int result = calender.BusinessDaysBetween(start, end);
+            
             Assert.AreEqual(4, result);
         }
     }
