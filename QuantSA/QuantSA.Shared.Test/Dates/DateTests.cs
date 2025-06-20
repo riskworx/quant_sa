@@ -23,6 +23,13 @@ namespace QuantSA.Shared.Test.Dates
             Assert.AreEqual(12, _date.Month);
             Assert.AreEqual(25, _date.Day);
         }
+
+        [TestMethod]
+        public void IsLeapYear_ReturnsCorrectly()
+        {
+            Assert.IsTrue(Date.IsLeapYear(2020));
+            Assert.IsFalse(Date.IsLeapYear(2021));
+        }
     }
 }
 
