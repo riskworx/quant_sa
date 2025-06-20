@@ -2,7 +2,6 @@
 using QuantSA.Shared.Dates;
 using System;
 
-
 namespace QuantSA.Shared.Test.Dates
 {
     [TestClass]
@@ -48,6 +47,16 @@ namespace QuantSA.Shared.Test.Dates
             Assert.AreEqual(31, endOfMonth.Day);
             Assert.AreEqual(3, endOfMonth.Month);
             Assert.AreEqual(2023, endOfMonth.Year);
+        }
+
+        [TestMethod]
+        public void IsEndOfMonth_ReturnsCorrectly()
+        {
+            var lastDay = new Date(2023, 4, 30);
+            var notLastDay = new Date(2023, 4, 29);
+
+            Assert.IsTrue(Date.IsEndOfMonth(lastDay));
+            Assert.IsFalse(Date.IsEndOfMonth(notLastDay));
         }
     }
 }
