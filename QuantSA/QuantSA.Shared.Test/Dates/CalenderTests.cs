@@ -16,8 +16,8 @@ namespace QuantSA.Shared.Test.Dates
         public void Setup()
         {
             _calendar = new Calendar("TestCalender");
-            _start = new Date(2024, 6, 3);
-            _end = new Date(2024, 6, 7);
+            _start = new Date(2024, 6, 17);
+            _end = new Date(2024, 6, 21);
 
         }
         [TestMethod]
@@ -27,6 +27,13 @@ namespace QuantSA.Shared.Test.Dates
             var result = _calendar.BusinessDaysBetween(_start, _end);
             
             Assert.AreEqual(4, result);
+        }
+
+        [TestMethod]
+        public void IsHoliday_ReturnsCorrectly()
+        {
+            Assert.IsFalse(_calendar.IsHoliday(_end));
+            Assert.IsTrue(_calendar.IsHoliday(_start));
         }
     }
 }
