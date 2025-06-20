@@ -9,7 +9,7 @@ namespace QuantSA.Shared.Test.Dates
     public class CalenderTests
     {
         [TestMethod]
-        public void BusinessDaysBetween_ExcludesWeekends()
+        public void BusinessDaysBetween_ReturnsCorrectly()
         {
             var calender = new Calendar("TestCalender");
             var start = new Date(2024, 6, 3);
