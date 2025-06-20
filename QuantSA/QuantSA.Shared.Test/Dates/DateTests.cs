@@ -8,15 +8,21 @@ namespace QuantSA.Shared.Test.Dates
     [TestClass]
     public class DateTest
     {
-        [TestMethod]
-        public void Function_FromYearMonthDay_InitializesCorrectly()
+        private Date _date;
+
+        [TestInitialize]
+        public void Setup()
         {
-            var date = new Date(2023, 12, 25);
-            Assert.AreEqual(2023, date.Year);
-            Assert.AreEqual(12, date.Month);
-            Assert.AreEqual(25, date.Day);
+            _date = new Date(2023, 12, 25);
         }
 
+        [TestMethod]
+        public void Date_FromYearMonthDay_MembersAreCorrect()
+        {
+            Assert.AreEqual(2023, _date.Year);
+            Assert.AreEqual(12, _date.Month);
+            Assert.AreEqual(25, _date.Day);
+        }
     }
 }
 
