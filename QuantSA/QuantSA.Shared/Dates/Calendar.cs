@@ -80,7 +80,7 @@ namespace QuantSA.Shared.Dates
         /// </summary>
         public bool IsEndOfMonth(Date d)
         {
-            throw new NotImplementedException();
+
         }
 
         /// <summary>
@@ -88,7 +88,14 @@ namespace QuantSA.Shared.Dates
         /// </summary>
         public Date EndOfMonth(Date d)
         {
-            throw new NotImplementedException();
+            var lastCalendarDay = new Date(d.Year, d.Month, Date.DaysInMonth(d.Year, d.Month));
+
+            while (!IsBusinessDay(lastCalendarDay))
+            {
+                lastCalendarDay = lastCalendarDay.AddDays(-1);
+            }
+
+            return lastCalendarDay;
         }
 
 
