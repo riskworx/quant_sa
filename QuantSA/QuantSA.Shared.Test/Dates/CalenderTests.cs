@@ -64,5 +64,17 @@ namespace QuantSA.Shared.Test.Dates
             Assert.IsTrue(_calendar.IsBusinessDay(weekday));
             Assert.IsFalse(_calendar.IsBusinessDay(weekend));
         }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsCorrectly()
+        {
+            var saturday = DayOfWeek.Saturday;
+            var sunday = DayOfWeek.Sunday;
+            var monday = DayOfWeek.Monday;
+
+            Assert.IsTrue(Calendar.IsWeekend(saturday));
+            Assert.IsTrue(Calendar.IsWeekend(sunday));
+            Assert.IsFalse(Calendar.IsWeekend(monday));
+        }
     }
 }
