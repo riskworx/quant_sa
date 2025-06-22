@@ -20,8 +20,12 @@ namespace QuantSA.Shared.Test.Dates
             _start = new Date(2024, 6, 17);
             _end = new Date(2024, 6, 21);
 
-            _calendar.AddHoliday(_start); //this is needed for the IsHoliday 
+            //this is needed for the IsHoliday test
+            _calendar.AddHoliday(_start);
 
+            //this is needed for the EndOfMonth test
+            var holiday = new Date(2024, 6, 28);
+            _calendar.AddHoliday(holiday);
         }
 
         [TestMethod]
@@ -38,6 +42,16 @@ namespace QuantSA.Shared.Test.Dates
             var actualEndOfMonth = _calendar.EndOfMonth(isLastDay);
 
             Assert.IsTrue(_calendar.IsEndOfMonth(isLastDay));
+        }
+
+        [TestMethod]
+        public void EndOfMonth_ReturnsCorrectly()
+        {
+            var input = new Date(2024, 6, 15);
+            var result = _calendar.EndOfMonth(input);
+
+            var expected = new Date(2024, 6, 27);
+            Assert.AreEqual(expected,result);
         }
     }
 }
