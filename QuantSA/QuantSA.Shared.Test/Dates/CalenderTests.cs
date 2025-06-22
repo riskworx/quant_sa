@@ -76,5 +76,18 @@ namespace QuantSA.Shared.Test.Dates
             Assert.IsTrue(Calendar.IsWeekend(sunday));
             Assert.IsFalse(Calendar.IsWeekend(monday));
         }
+
+        [TestMethod]
+        public void BusinessDaysBetween_ReturnsCorrectly()
+        {
+            var from = new Date(2024, 6, 17); 
+            var to = new Date(2024, 6, 21);   
+
+            _calendar.AddHoliday(from); 
+
+            var result = _calendar.BusinessDaysBetween(from, to);
+
+            Assert.AreEqual(4, result); 
+        }
     }
 }
