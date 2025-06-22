@@ -53,5 +53,16 @@ namespace QuantSA.Shared.Test.Dates
             var expected = new Date(2024, 6, 27);
             Assert.AreEqual(expected,result);
         }
+
+        [TestMethod]
+        public void IsBusinessDay_ReturnsCorrectly()
+        {
+            var weekday = new Date(2024, 6, 18);
+            var weekend = new Date(2024, 6, 22);
+
+            Assert.IsFalse(_calendar.IsBusinessDay(_start));
+            Assert.IsTrue(_calendar.IsBusinessDay(weekday));
+            Assert.IsFalse(_calendar.IsBusinessDay(weekend));
+        }
     }
 }
