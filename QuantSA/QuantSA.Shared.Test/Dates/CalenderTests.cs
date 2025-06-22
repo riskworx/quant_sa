@@ -3,6 +3,8 @@ using System.Globalization;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuantSA.Shared.Dates;
 using Calendar = QuantSA.Shared.Dates.Calendar;
+using System.Collections.Generic;
+
 
 namespace QuantSA.Shared.Test.Dates
 {
@@ -97,6 +99,22 @@ namespace QuantSA.Shared.Test.Dates
             var result = _calendar.BusinessDaysBetween(from, to); 
 
             Assert.AreEqual(-4, result); 
+        }
+
+        [TestMethod]
+        public void Constructor_WithHolidays_AddsHolidaysCorrectly()
+        {
+            var holidays = new List<Date>
+            {
+                new Date(2024, 12, 25),
+                new Date(2024, 1, 1)
+            };
+
+            var calendar = new Calendar("HolidayCalendar", holidays);
+
+            Assert.IsTrue(calendar.IsHoliday(new Date(2024, 12, 25)));
+            Assert.IsTrue(calendar.IsHoliday(new Date(2024, 1, 1)));
+            Assert.AreEqual("HolidayCalendar", calendar.GetName());
         }
     }
 }
