@@ -83,11 +83,20 @@ namespace QuantSA.Shared.Test.Dates
             var from = new Date(2024, 6, 17); 
             var to = new Date(2024, 6, 21);   
 
-            _calendar.AddHoliday(from); 
-
             var result = _calendar.BusinessDaysBetween(from, to);
 
-            Assert.AreEqual(4, result); 
+            Assert.AreEqual(3, result); //this is because the BusinessDaysBetween method by default includes the from and excludes the to.
+        }
+
+        [TestMethod]
+        public void BusinessDaysBetween_ReturnsNegative_WhenFromIsAfterTo()
+        {
+            var from = new Date(2024, 6, 21);
+            var to = new Date(2024, 6, 17);  
+
+            var result = _calendar.BusinessDaysBetween(from, to); 
+
+            Assert.AreEqual(-4, result); 
         }
     }
 }
