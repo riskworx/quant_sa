@@ -116,5 +116,15 @@ namespace QuantSA.Shared.Test.Dates
             Assert.IsTrue(calendar.IsHoliday(new Date(2024, 1, 1)));
             Assert.AreEqual("HolidayCalendar", calendar.GetName());
         }
+
+        [TestMethod]
+        public void GetName_ReturnsCalendarName()
+        {
+            var calendar = new Calendar("TestMarket");
+
+            var name = calendar.GetName();
+
+            Assert.AreEqual("TestMarket", name);
+        }
     }
 }
