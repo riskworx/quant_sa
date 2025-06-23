@@ -24,6 +24,46 @@ namespace QuantSA.Core.Tests.RootFinding
                 Value[2] = Math.Pow(point[2] - 3.0, 2);
             }
         }
+        
+        public class NeverConvergesFunction : IObjectiveVectorFunction
+        {
+            private int _callCount = 0;
+            public Vector<double> Point { get; set; }
+            public Vector<double> Value { get; set; }
+
+            public void EvaluateAt(Vector<double> point)
+            {
+                Point = point;
+                _callCount++;
+                Value = Vector<double>.Build.DenseOfArray(new[]
+                {
+                    999.0 + _callCount,
+                    999.0 + _callCount,
+                    999.0 + _callCount
+                });
+            }
+        }
+        
+        public class OneInsensitiveInputFunction : IObjectiveVectorFunction
+        {
+            public Vector<double> Point { get; set; }
+            public Vector<double> Value { get; set; }
+
+            public void EvaluateAt(Vector<double> point)
+            {
+                Point = point;
+
+                double x = point[0];
+                double y = point[1];
+
+                Value = Vector<double>.Build.DenseOfArray(new[]
+                {
+                    x + y,
+                    x - y,
+                    x * y
+                });
+            }
+        }
 
         [TestMethod]
         public void MultiDimNewton_CanFindRoot()
@@ -36,46 +76,40 @@ namespace QuantSA.Core.Tests.RootFinding
             Assert.AreEqual(0.0, t.Value.AbsoluteMaximum(), 1e-6);
         }
 
-        /*[TestMethod]
-        public void Error_Test_Function()
-        {
-        }*/
-
         [TestMethod]
         public void MultiDimNewton_ImmediateConvergence()
         {
             var t = new TestFunction();
             var mdnSolver = new MultiDimNewton(1e-6, 100);
-            var root = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 });  
+            var root = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 });
 
             var result = mdnSolver.FindRoot(t, root);
 
             Assert.AreEqual(0.0, t.Value.AbsoluteMaximum(), 1e-6);
             Assert.AreEqual(0, result.Iterations);
         }
-    }
-    public class NeverConvergesFunction : IObjectiveVectorFunction
-    {
-        public Vector<double> Point { get; set; }
-        public Vector<double> Value { get; set; }
-
-        public void EvaluateAt(Vector<double> point)
-        {
-            Point = point;
-            // Always return large, unchanging values so it never converges
-            Value = Vector<double>.Build.DenseOfArray(new[] { 999.0, 999.0, 999.0 });
-        }
 
         [TestMethod]
         public void MultiDimNewton_StopsAfterMaxIterations()
         {
             var f = new NeverConvergesFunction();
-            var solver = new MultiDimNewton(1e-12, 3);  // Low max iterations
+            var solver = new MultiDimNewton(1e-12, 3);
             var initialGuess = Vector<double>.Build.Dense(3, 0.0);
 
             var result = solver.FindRoot(f, initialGuess);
 
-            Assert.IsTrue(result.Iterations <= 3, "Solver did not stop after the max allowed iterations.");
+            Assert.AreEqual(3, result.Iterations, "Solver did not run up to the maximum iteration count.");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentException))]
+        public void MultiDimNewton_ThrowsIfJacobianColumnIsZero()
+        {
+            var f = new OneInsensitiveInputFunction();
+            var solver = new MultiDimNewton(1e-8, 10);
+            var initialGuess = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 }); 
+
+            solver.FindRoot(f, initialGuess);
         }
     }
 }
