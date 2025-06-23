@@ -16,15 +16,38 @@ namespace QuantSA.Core.Products.Rates
             _notional = notional;
             _currency = currency;
         }
-
+        // Required by Product abstract class
         public override List<Cashflow> GetCFs()
         {
-            return new List<Cashflow>()
+            return new List<Cashflow>
+            {
+                new Cashflow(_maturityDate, _notional, _currency)
+            };
+        }
+
+        // Required by ProductWrapper behavior
+        public List<Cashflow> GetCFs(Date valueDate)
+        {
+            if (_maturityDate > valueDate)
+            {
+                return new List<Cashflow>
+                {
+                    new Cashflow(_maturityDate, _notional, _currency)
+                };
+            }
+            return new List<Cashflow>();
+        }
+
+
+
+        /*public override List<Cashflow> GetCFs()
+        {
+            return new List<Cashflow>
             {
                 {
                     new Cashflow(_maturityDate, _notional, _currency)
                 }
             };
-        }
+        }*/
     }
 }
