@@ -54,4 +54,28 @@ namespace QuantSA.Core.Tests.RootFinding
             Assert.AreEqual(0, result.Iterations);
         }
     }
+    public class NeverConvergesFunction : IObjectiveVectorFunction
+    {
+        public Vector<double> Point { get; set; }
+        public Vector<double> Value { get; set; }
+
+        public void EvaluateAt(Vector<double> point)
+        {
+            Point = point;
+            // Always return large, unchanging values so it never converges
+            Value = Vector<double>.Build.DenseOfArray(new[] { 999.0, 999.0, 999.0 });
+        }
+
+        [TestMethod]
+        public void MultiDimNewton_StopsAfterMaxIterations()
+        {
+            var f = new NeverConvergesFunction();
+            var solver = new MultiDimNewton(1e-12, 3);  // Low max iterations
+            var initialGuess = Vector<double>.Build.Dense(3, 0.0);
+
+            var result = solver.FindRoot(f, initialGuess);
+
+            Assert.IsTrue(result.Iterations <= 3, "Solver did not stop after the max allowed iterations.");
+        }
+    }
 }
