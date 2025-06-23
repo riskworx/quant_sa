@@ -36,9 +36,22 @@ namespace QuantSA.Core.Tests.RootFinding
             Assert.AreEqual(0.0, t.Value.AbsoluteMaximum(), 1e-6);
         }
 
-        [TestMethod]
+        /*[TestMethod]
         public void Error_Test_Function()
         {
+        }*/
+
+        [TestMethod]
+        public void MultiDimNewton_ImmediateConvergence()
+        {
+            var t = new TestFunction();
+            var mdnSolver = new MultiDimNewton(1e-6, 100);
+            var root = Vector<double>.Build.DenseOfArray(new[] { 1.0, 2.0, 3.0 });  
+
+            var result = mdnSolver.FindRoot(t, root);
+
+            Assert.AreEqual(0.0, t.Value.AbsoluteMaximum(), 1e-6);
+            Assert.AreEqual(0, result.Iterations);
         }
     }
 }
