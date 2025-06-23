@@ -12,7 +12,7 @@ namespace QuantSA.Core.Tests.Products.Rates
         public void ZeroCouponBond_ReturnsSingleCashflow()
         {
             var maturity = new Date(2028, 12, 31);
-            double notional = 1000000;
+            double notional = 1_000_000;
             var currency = new Currency("ZAR");
 
             var bond = new ZeroCouponBond(maturity, notional, currency);
