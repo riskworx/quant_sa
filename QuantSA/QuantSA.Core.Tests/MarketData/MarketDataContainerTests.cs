@@ -3,7 +3,7 @@ using QuantSA.Core.MarketData;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.Exceptions;
 using QuantSA.Shared.MarketData;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.Core.Tests.MarketData
 {
