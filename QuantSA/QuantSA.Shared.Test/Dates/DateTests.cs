@@ -33,7 +33,7 @@ namespace QuantSA.Shared.Test.Dates
         [TestMethod]
         public void DaysInMonth_ReturnsCorrectly()
         {
-            Assert.AreEqual(31, Date.DaysInMonth(2023,1));
+            Assert.AreEqual(31, Date.DaysInMonth(2023, 1));
             Assert.AreEqual(29, Date.DaysInMonth(2020, 2));
             Assert.AreEqual(28, Date.DaysInMonth(2023, 2));
         }
