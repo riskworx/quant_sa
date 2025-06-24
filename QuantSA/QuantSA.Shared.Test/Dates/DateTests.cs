@@ -24,16 +24,20 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsLeapYear_ReturnsCorrectly()
+        public void IsLeapYear_ReturnsTrueCorrectly()
         {
             Assert.IsTrue(Date.IsLeapYear(2020));
+        }
+
+        public void IsLeapYear_ReturnsFalseCorrectly()
+        {
             Assert.IsFalse(Date.IsLeapYear(2021));
         }
 
         [TestMethod]
         public void DaysInMonth_ReturnsCorrectly()
         {
-            Assert.AreEqual(31, Date.DaysInMonth(2023,1));
+            Assert.AreEqual(31, Date.DaysInMonth(2023, 1));
             Assert.AreEqual(29, Date.DaysInMonth(2020, 2));
             Assert.AreEqual(28, Date.DaysInMonth(2023, 2));
         }
