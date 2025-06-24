@@ -72,19 +72,32 @@ namespace QuantSA.Shared.Test.Dates
         {
             var weekend = new Date(2024, 6, 22);
 
+
             Assert.IsFalse(_calendar.IsBusinessDay(weekend));
         }
 
         [TestMethod]
-        public void IsWeekend_ReturnsCorrectly()
+        public void IsWeekend_ReturnsMondayAsExpected()
         {
-            var saturday = DayOfWeek.Saturday;
-            var sunday = DayOfWeek.Sunday;
             var monday = DayOfWeek.Monday;
 
-            Assert.IsTrue(Calendar.IsWeekend(saturday));
-            Assert.IsTrue(Calendar.IsWeekend(sunday));
             Assert.IsFalse(Calendar.IsWeekend(monday));
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsSaturdayAsExpected()
+        {
+            var saturday = DayOfWeek.Saturday;
+
+            Assert.IsTrue(Calendar.IsWeekend(saturday));
+        }
+
+        [TestMethod]
+        public void IsWeekend_ReturnsSundayAsExpected()
+        {
+            var sunday = DayOfWeek.Sunday;
+
+            Assert.IsTrue(Calendar.IsWeekend(sunday));
         }
 
         [TestMethod]
