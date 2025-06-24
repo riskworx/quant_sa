@@ -85,7 +85,7 @@ namespace QuantSA.Shared.Test.Dates
 
             var result = _calendar.BusinessDaysBetween(from, to);
 
-            Assert.AreEqual(3, result); //this is because the BusinessDaysBetween method by default includes the from and excludes the to.
+            Assert.AreEqual(3, result); // This is because the BusinessDaysBetween method by default includes the from and excludes the to.
         }
 
         [TestMethod]
