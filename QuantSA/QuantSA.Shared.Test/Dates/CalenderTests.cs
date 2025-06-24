@@ -41,7 +41,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsEndOfMonth_ReturnsCorrect()
+        public void IsEndOfMonth_ReturnsAsExpected()
         {
             var isLastDay = new Date(2024, 1, 31);
             var actualEndOfMonth = _calendar.EndOfMonth(isLastDay);
@@ -50,7 +50,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void EndOfMonth_ReturnsCorrectly()
+        public void EndOfMonth_ReturnsAsExpected()
         {
             var input = new Date(2024, 6, 15);
             var result = _calendar.EndOfMonth(input);
@@ -101,7 +101,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void BusinessDaysBetween_ReturnsCorrectly()
+        public void BusinessDaysBetween_ReturnsAsExpected()
         {
             var from = new Date(2024, 6, 17); 
             var to = new Date(2024, 6, 21);   
@@ -123,7 +123,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void Constructor_WithHolidays_AddsHolidaysCorrectly()
+        public void Constructor_WithHolidays_AddsHolidaysAsExpected()
         {
             var holidays = new List<Date>
             {
