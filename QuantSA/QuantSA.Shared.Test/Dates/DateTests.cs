@@ -54,12 +54,18 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsEndOfMonth_ReturnsCorrectly()
+        public void IsEndOfMonth_ReturnsTrueCorrectly()
         {
             var lastDay = new Date(2023, 4, 30);
-            var notLastDay = new Date(2023, 4, 29);
 
             Assert.IsTrue(Date.IsEndOfMonth(lastDay));
+        }
+
+        [TestMethod]
+        public void IsEndOfMonth_ReturnsFalseCorrectly()
+        {
+            var notLastDay = new Date(2023, 4, 29);
+
             Assert.IsFalse(Date.IsEndOfMonth(notLastDay));
         }
     }
