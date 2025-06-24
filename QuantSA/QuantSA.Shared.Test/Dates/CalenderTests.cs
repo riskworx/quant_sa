@@ -22,10 +22,8 @@ namespace QuantSA.Shared.Test.Dates
             _start = new Date(2024, 6, 17);
             _end = new Date(2024, 6, 21);
 
-            //this is needed for the IsHoliday test
             _calendar.AddHoliday(_start);
 
-            //this is needed for the EndOfMonth test
             var holiday = new Date(2024, 6, 28);
             _calendar.AddHoliday(holiday);
         }
