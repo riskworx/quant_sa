@@ -29,10 +29,15 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsHoliday_ReturnsCorrect()
+        public void IsHoliday_ReturnsTrueCorrect()
+        {
+            Assert.IsTrue(_calendar.IsHoliday(_start));
+        }
+
+        [TestMethod]
+        public void IsHoliday_ReturnsFalseCorrect()
         {
             Assert.IsFalse(_calendar.IsHoliday(_end));
-            Assert.IsTrue(_calendar.IsHoliday(_start));
         }
 
         [TestMethod]
