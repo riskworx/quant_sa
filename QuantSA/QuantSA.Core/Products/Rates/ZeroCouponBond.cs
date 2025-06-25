@@ -18,13 +18,6 @@ namespace QuantSA.Core.Products.Rates
         }
         public override List<Cashflow> GetCFs()
         {
-            return new List<Cashflow>
-            {
-                new Cashflow(_maturityDate, _notional, _currency)
-            };
-        }
-        public List<Cashflow> GetCFs(Date valueDate)
-        {
             if (_maturityDate > valueDate)
             {
                 return new List<Cashflow>
