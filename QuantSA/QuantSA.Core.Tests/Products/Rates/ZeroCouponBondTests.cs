@@ -18,6 +18,7 @@ namespace QuantSA.Core.Tests.Products.Rates
 
             var bond = new ZeroCouponBond(maturity, notional, currency);
 
+            bond.SetValueDate(new Date(2024, 01, 02));
             var cashflows = bond.GetCFs();
 
             Assert.AreEqual(1, cashflows.Count);
