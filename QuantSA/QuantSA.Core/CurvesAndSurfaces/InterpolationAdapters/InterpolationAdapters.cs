@@ -1,19 +1,19 @@
-﻿using MathNet.Numerics.Interpolation;
+﻿using MathNetSpline = MathNet.Numerics.Interpolation.LinearSpline;
 
-namespace QuantSA.Core.CurvesAndSurfaces
+namespace QuantSA.Core.CurvesAndSurfaces.InterpolationAdapters
 {
-    public class LinearSplineAdapter : IInterpolator1D
+    public class LinearSpline : IInterpolator1D
     {
-        private readonly LinearSpline _spline;
+        private readonly MathNetSpline _mathNetSpline;
 
-        public LinearSplineAdapter(double[] xVals, double[] yVals)
+        public LinearSpline(double[] xVals, double[] yVals)
         {
-            _spline = LinearSpline.InterpolateSorted(xVals, yVals);
+            _mathNetSpline = MathNetSpline.InterpolateSorted(xVals, yVals);
         }
 
         public double Interpolate(double x)
         {
-            return _spline.Interpolate(x);
+            return _mathNetSpline.Interpolate(x);
         }
     }
 }
