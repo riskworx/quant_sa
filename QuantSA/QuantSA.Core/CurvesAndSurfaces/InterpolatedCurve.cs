@@ -1,6 +1,7 @@
 ﻿using System;
 using QuantSA.Shared.CurvesAndSurfaces;
 using QuantSA.Shared.Dates;
+using QuantSA.Core.CurvesAndSurfaces.InterpolationAdapters;
 
 namespace QuantSA.Core.CurvesAndSurfaces
 {
@@ -10,7 +11,7 @@ namespace QuantSA.Core.CurvesAndSurfaces
 
         public InterpolatedCurve(double[] xVals, double[] yVals)
         {
-            _interpolator = new LinearSplineAdapter(xVals, yVals);
+            _interpolator = new LinearSpline(xVals, yVals);
         }
 
         public double InterpAtDate(Date date)
