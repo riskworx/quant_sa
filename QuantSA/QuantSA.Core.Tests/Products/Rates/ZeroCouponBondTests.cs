@@ -27,7 +27,7 @@ namespace QuantSA.Core.Tests.Products.Rates
         }
 
         [TestMethod]
-        public void ZeroCouponBond_NoCashflowsIfPastMaturity()
+        public void GetCfs_MaturityBeforeValueDate_ReturnsNoCashflows()
         {
             var maturity = new Date(2024, 01, 01);
             double notional = 1_000_000;
