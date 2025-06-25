@@ -10,7 +10,7 @@ namespace QuantSA.Core.Tests.Products.Rates
     public class ZeroCouponBondTests
     {
         [TestMethod]
-        public void ZeroCouponBond_ReturnsSingleCashflow()
+        public void GetCfs_MaturityAfterValueDate_ReturnsExpectedCashflow()
         {
             var maturity = new Date(2028, 12, 31);
             double notional = 1_000_000;
