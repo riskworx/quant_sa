@@ -6,9 +6,7 @@ using QuantSA.Shared.Primitives;
 using QuantSA.Core.Products.Rates;
 using QuantSA.CoreExtensions.ProductPVs.Rates;
 using QuantSA.Shared.MarketData;
-using QuantSA.Shared.Conventions;
 using QuantSA.Solution.Test;
-using QuantSA.Core.Products;
 
 namespace QuantSA.CoreExtensions.Test.whycantname.Rates
 {
@@ -18,7 +16,6 @@ namespace QuantSA.CoreExtensions.Test.whycantname.Rates
         [TestMethod]
         public void CurvePv_PricesFRA_AsExpected()
         {
-            // Arrange
             var valueDate = new Date(2025, 1, 1);
             var nearDate = new Date(2025, 6, 30);
             var farDate = new Date(2025, 12, 31);
@@ -27,7 +24,8 @@ namespace QuantSA.CoreExtensions.Test.whycantname.Rates
             var accrualFraction = 0.5;
             var marketRate = 0.04;
             var payFixed = true;
-            var currency = TestHelpers.ZAR;
+            var currency = new Currency("ZAR");
+            //var currency = TestHelpers.ZAR;
 
 
             var index = new FloatRateIndex("DummyIndex", currency, "JIBAR", Tenor.FromMonths(3));
@@ -38,19 +36,15 @@ namespace QuantSA.CoreExtensions.Test.whycantname.Rates
             fra.SetValueDate(valueDate);
             fra.SetIndexValues(index, new[] { marketRate });
 
-            // Act
             var pv = fra.CurvePv(discountCurve);
 
-            // Expected
             var undiscountedPayoff = notional * (marketRate - fixedRate) * accrualFraction / (1 + marketRate * accrualFraction);
             var t = (nearDate - valueDate) / 365.0;
             var expectedPv = undiscountedPayoff * Math.Exp(-marketRate * t);
 
-            // Assert
             Assert.AreEqual(expectedPv, pv, 1e-2);
         }
 
-        // ✅ Local helper class for a flat discount curve
         private class FlatDiscountCurve : IDiscountingSource
         {
             private readonly Date _anchorDate;
@@ -74,10 +68,8 @@ namespace QuantSA.CoreExtensions.Test.whycantname.Rates
                 return Math.Exp(-_rate * t);
             }
 
-            // Stub implementations for inherited interface (not needed for test)
             public bool CanBeA<T>(MarketDataDescription<T> description, IMarketDataContainer container) where T : class, IMarketDataSource => false;
             public T Get<T>(MarketDataDescription<T> description) where T : class, IMarketDataSource => default;
-
 
             public string GetName() => "FlatCurveTest";
 
