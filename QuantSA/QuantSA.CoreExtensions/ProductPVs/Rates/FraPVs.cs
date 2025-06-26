@@ -11,8 +11,8 @@ namespace QuantSA.CoreExtensions.ProductPVs.Rates
         /// </summary>
         public static double CurvePv(this FRA fra, IDiscountingSource discountCurve)
         {
-            var cfs = fra.GetCFs();  // internally uses _nearDate, _rate, _accrualFraction etc.
-            return cfs.PV(discountCurve);  // extension method in QuantSA
+            var cfs = fra.GetCFs(); 
+            return cfs.PV(discountCurve);  
         }
     }
 }

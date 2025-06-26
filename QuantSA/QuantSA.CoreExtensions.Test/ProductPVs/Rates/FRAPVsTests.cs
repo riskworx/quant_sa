@@ -66,8 +66,8 @@ namespace QuantSA.CoreExtensions.Test.ProductPVs.Rates
                 var t = (date - _anchorDate) / 365.0;
                 return Math.Exp(-_rate * t);
             }
-
-            public bool CanBeA<T>(MarketDataDescription<T> description, IMarketDataContainer container) where T : class, IMarketDataSource => false;
+            
+            //public bool CanBeA<T>(MarketDataDescription<T> description, IMarketDataContainer container) where T : class, IMarketDataSource => false;
             public T Get<T>(MarketDataDescription<T> description) where T : class, IMarketDataSource => default;
 
             public string GetName() => "FlatCurveTest";
