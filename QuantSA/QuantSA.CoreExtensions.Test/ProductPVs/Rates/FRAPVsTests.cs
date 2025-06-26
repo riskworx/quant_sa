@@ -6,7 +6,7 @@ using QuantSA.Shared.Dates;
 using QuantSA.Shared.MarketData;
 using QuantSA.Shared.MarketObservables;
 using QuantSA.Shared.Primitives;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.CoreExtensions.Test.ProductPVs.Rates
 {
