@@ -24,7 +24,6 @@ namespace QuantSA.CoreExtensions.Test.ProductPVs.Rates
             var accrualFraction = 0.5;
             var marketRate = 0.04;
             var payFixed = true;
-            //var currency = new Currency("ZAR");
             var currency = TestHelpers.ZAR;
 
 
