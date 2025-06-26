@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using QuantSA.Core.Products.Rates;
 using QuantSA.Shared.Dates;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using Assert = NUnit.Framework.Assert;
 
 namespace QuantSA.Core.Tests.Products.Rates

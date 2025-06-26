@@ -11,7 +11,7 @@ using QuantSA.Shared.MarketData;
 using QuantSA.Shared.MarketObservables;
 using QuantSA.Shared.Primitives;
 using QuantSA.Shared.State;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.CoreExtensions.Test.Curves
 {

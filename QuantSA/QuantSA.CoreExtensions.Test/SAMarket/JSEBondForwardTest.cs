@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using QuantSA.Core.Products.SAMarket;
 using QuantSA.CoreExtensions.SAMarket;
 using QuantSA.Shared.Dates;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.CoreExtensions.Test.SAMarket
 {

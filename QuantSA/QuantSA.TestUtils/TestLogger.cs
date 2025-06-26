@@ -5,7 +5,7 @@ using log4net.Layout;
 using log4net.Repository.Hierarchy;
 using QuantSA.Shared.State;
 
-namespace QuantSA.Solution.Test
+namespace QuantSA.TestUtils
 {
     public class TestLogger : ILogFactory
     {

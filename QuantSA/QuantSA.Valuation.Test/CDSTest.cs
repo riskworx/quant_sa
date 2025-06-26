@@ -6,7 +6,7 @@ using QuantSA.Core.Dates;
 using QuantSA.Core.MarketData;
 using QuantSA.Core.Products.Credit;
 using QuantSA.Shared.Dates;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.CreditFX;
 
 namespace QuantSA.Valuation.Test
