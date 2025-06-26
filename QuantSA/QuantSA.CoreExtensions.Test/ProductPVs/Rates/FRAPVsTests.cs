@@ -1,14 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuantSA.Shared.Dates;
-using QuantSA.Shared.MarketObservables;
-using QuantSA.Shared.Primitives;
 using QuantSA.Core.Products.Rates;
 using QuantSA.CoreExtensions.ProductPVs.Rates;
+using QuantSA.Shared.Dates;
 using QuantSA.Shared.MarketData;
+using QuantSA.Shared.MarketObservables;
+using QuantSA.Shared.Primitives;
 using QuantSA.Solution.Test;
 
-namespace QuantSA.CoreExtensions.Test.whycantname.Rates
+namespace QuantSA.CoreExtensions.Test.ProductPVs.Rates
 {
     [TestClass]
     public class FraPVTests
@@ -24,8 +24,8 @@ namespace QuantSA.CoreExtensions.Test.whycantname.Rates
             var accrualFraction = 0.5;
             var marketRate = 0.04;
             var payFixed = true;
-            var currency = new Currency("ZAR");
-            //var currency = TestHelpers.ZAR;
+            //var currency = new Currency("ZAR");
+            var currency = TestHelpers.ZAR;
 
 
             var index = new FloatRateIndex("DummyIndex", currency, "JIBAR", Tenor.FromMonths(3));
