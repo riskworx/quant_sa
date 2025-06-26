@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27130.2036
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35806.99 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{72CE0E67-4D38-4F53-91A1-299F9E155558}"
 	ProjectSection(SolutionItems) = preProject
@@ -23,6 +23,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantSA.CoreExtensions", "QuantSA.CoreExtensions\QuantSA.CoreExtensions.csproj", "{F8101F09-3ABD-472E-A9A6-D3D45E748E06}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantSA.CoreExtensions.Test", "QuantSA.CoreExtensions.Test\QuantSA.CoreExtensions.Test.csproj", "{553515B7-E5D5-46EB-8B25-94020EBDCEC1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuantSA.Solution.Test", "QuantSA.Solution.Test\QuantSA.Solution.Test.csproj", "{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +132,18 @@ Global
 		{553515B7-E5D5-46EB-8B25-94020EBDCEC1}.Release|x64.Build.0 = Release|Any CPU
 		{553515B7-E5D5-46EB-8B25-94020EBDCEC1}.Release|x86.ActiveCfg = Release|Any CPU
 		{553515B7-E5D5-46EB-8B25-94020EBDCEC1}.Release|x86.Build.0 = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|x64.Build.0 = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Debug|x86.Build.0 = Debug|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|x64.ActiveCfg = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|x64.Build.0 = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|x86.ActiveCfg = Release|Any CPU
+		{AE9767C5-1ACE-74FB-0673-7D9DC158BBBF}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
