@@ -42,7 +42,12 @@ namespace QuantSA.Valuation.Models.Rates
         {
             _allDates = new List<Date>();
         }
-
+        /// <summary>
+        /// Adds required dates for the given index to the model.
+        /// Initializes the list if it's empty.
+        /// </summary>
+        /// <param name="index">The market observable needing the dates</param>
+        /// <param name="requiredDates">Dates to include in the simulation</param>
         public override void SetRequiredDates(MarketObservable index, List<Date> requiredDates)
         {
             if (_allDates == null) _allDates = requiredDates;
