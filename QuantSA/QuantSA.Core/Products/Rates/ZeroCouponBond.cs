@@ -20,7 +20,7 @@ namespace QuantSA.Core.Products.Rates
 
         public override void SetValueDate(Date valueDate)
         {
-            this.valueDate = valueDate; // ✅ simple override for basic product
+            this.valueDate = valueDate; 
         }
         public override List<Cashflow> GetCFs()
         {
