@@ -16,7 +16,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void Date_FromYearMonthDay_MembersAreCorrect()
+        public void Date_From2023_12_25_MembersMatchInput()
         {
             Assert.AreEqual(2023, _date.Year);
             Assert.AreEqual(12, _date.Month);
@@ -24,18 +24,19 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsLeapYear_ReturnsTrueCorrectly()
+        public void IsLeapYear_2020_ReturnsTrue()
         {
             Assert.IsTrue(Date.IsLeapYear(2020));
         }
 
-        public void IsLeapYear_ReturnsFalseCorrectly()
+        [TestMethod]
+        public void IsLeapYear_2021_ReturnsFalse()
         {
             Assert.IsFalse(Date.IsLeapYear(2021));
         }
 
         [TestMethod]
-        public void DaysInMonth_ReturnsCorrectly()
+        public void DaysInMonth_ReturnsAsExpected()
         {
             Assert.AreEqual(31, Date.DaysInMonth(2023, 1));
             Assert.AreEqual(29, Date.DaysInMonth(2020, 2));
@@ -43,7 +44,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void EndOfMonth_ReturnsCorrectly()
+        public void EndOfMonth_15Mar2023_Returns31Mar2023()
         {
             var midMonth = new Date(2023, 3, 15);
             var endOfMonth = Date.EndOfMonth(midMonth);
@@ -54,7 +55,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsEndOfMonth_ReturnsTrueCorrectly()
+        public void IsEndOfMonth_30Apr_ReturnsTrue()
         {
             var lastDay = new Date(2023, 4, 30);
 
@@ -62,7 +63,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsEndOfMonth_ReturnsFalseCorrectly()
+        public void IsEndOfMonth_29Apr_ReturnsFalse()
         {
             var notLastDay = new Date(2023, 4, 29);
 
