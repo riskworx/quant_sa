@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.Core.Tests.Primitives
 {
