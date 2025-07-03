@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.Primitives;
 
@@ -11,7 +10,6 @@ namespace QuantSA.Core.Products.SAMarket
         /// <summary> 
         /// Bond details
         /// <summary>
-        private readonly List<Cashflow> _cfs;
         public readonly double annualCouponRate;
 
         // The number of days before a coupon date that the bond starts trading ex.
