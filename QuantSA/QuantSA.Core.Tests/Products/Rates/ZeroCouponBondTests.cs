@@ -3,6 +3,7 @@ using QuantSA.Core.Products.Rates;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.Primitives;
 using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.Core.Tests.Products.Rates
 {
@@ -14,8 +15,7 @@ namespace QuantSA.Core.Tests.Products.Rates
         {
             var maturity = new Date(2028, 12, 31);
             double notional = 1_000_000;
-            var currency = new Currency("ZAR");
-            //var currency = TestHelpers.ZAR;
+            var currency = TestHelpers.ZAR;
 
             var bond = new ZeroCouponBond(maturity, notional, currency);
 
@@ -33,8 +33,7 @@ namespace QuantSA.Core.Tests.Products.Rates
         {
             var maturity = new Date(2024, 01, 01);
             double notional = 1_000_000;
-            var currency = new Currency("ZAR");
-            //var currency = TestHelpers.ZAR;
+            var currency = TestHelpers.ZAR;
 
             var bond = new ZeroCouponBond(maturity, notional, currency);
 
