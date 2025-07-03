@@ -3,6 +3,7 @@ using QuantSA.Core.CurvesAndSurfaces;
 using QuantSA.Core.Products.Rates;
 using QuantSA.Core.Serialization;
 using QuantSA.Shared.MarketObservables;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.Equity;
 using QuantSA.Valuation.Models.Rates;
 
