@@ -29,19 +29,19 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsHoliday_ReturnsTrueCorrect()
+        public void IsHoliday_DaysIsHoliday_ReturnsTrue()
         {
             Assert.IsTrue(_calendar.IsHoliday(_start));
         }
 
         [TestMethod]
-        public void IsHoliday_ReturnsFalseCorrect()
+        public void IsHoliday_DaysIsNotHoliday_ReturnsFalse()
         {
             Assert.IsFalse(_calendar.IsHoliday(_end));
         }
 
         [TestMethod]
-        public void IsEndOfMonth_ReturnsAsExpected()
+        public void IsEndOfMonth_31Jan2024_ReturnsTrue()
         {
             var isLastDay = new Date(2024, 1, 31);
             var actualEndOfMonth = _calendar.EndOfMonth(isLastDay);
@@ -50,7 +50,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void EndOfMonth_ReturnsAsExpected()
+        public void EndOfMonth_15Jun2024_Returns27Jun2024()
         {
             var input = new Date(2024, 6, 15);
             var result = _calendar.EndOfMonth(input);
@@ -60,7 +60,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsBusinessDay_ReturnsWeekdayAsExpected()
+        public void IsBusinessDay_Weekday_ReturnsTrue()
         {
             var weekday = new Date(2024, 6, 18);
 
@@ -68,16 +68,15 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsBusinessDay_ReturnsWeekendAsExpected()
+        public void IsBusinessDay_Weekend_ReturnsFalse()
         {
             var weekend = new Date(2024, 6, 22);
-
 
             Assert.IsFalse(_calendar.IsBusinessDay(weekend));
         }
 
         [TestMethod]
-        public void IsWeekend_ReturnsMondayAsExpected()
+        public void IsWeekend_Monday_ReturnsFalse()
         {
             var monday = DayOfWeek.Monday;
 
@@ -85,7 +84,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsWeekend_ReturnsSaturdayAsExpected()
+        public void IsWeekend_Saturday_ReturnsFalse()
         {
             var saturday = DayOfWeek.Saturday;
 
@@ -93,7 +92,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void IsWeekend_ReturnsSundayAsExpected()
+        public void IsWeekend_Sunday_ReturnsFalse()
         {
             var sunday = DayOfWeek.Sunday;
 
@@ -101,7 +100,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void BusinessDaysBetween_ReturnsAsExpected()
+        public void BusinessDaysBetween_17To21Jun2024_Returns3()
         {
             var from = new Date(2024, 6, 17); 
             var to = new Date(2024, 6, 21);   
@@ -112,7 +111,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void BusinessDaysBetween_ReturnsNegative_WhenFromIsAfterTo()
+        public void BusinessDaysBetween_21To17Jun2024_ReturnsNegative4()
         {
             var from = new Date(2024, 6, 21);
             var to = new Date(2024, 6, 17);  
@@ -123,7 +122,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void Constructor_WithHolidays_AddsHolidaysAsExpected()
+        public void Constructor_WithHolidays_AddsToCalendar()
         {
             var holidays = new List<Date>
             {
@@ -139,7 +138,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void GetName_ReturnsCalendarName()
+        public void GetName_CalendarIsTestMarket_ReturnsTestMarket()
         {
             var calendar = new Calendar("TestMarket");
 
