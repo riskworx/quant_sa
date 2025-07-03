@@ -7,7 +7,7 @@ using QuantSA.Core.Products.Rates;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.MarketObservables;
 using QuantSA.Shared.Primitives;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.Rates;
 using QuantSA.Valuation.Models.RatesFX;
 

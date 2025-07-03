@@ -11,7 +11,7 @@ using QuantSA.Core.Products.Equity;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.MarketData;
 using QuantSA.Shared.MarketObservables;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.Equity;
 using QuantSA.Valuation.Models.Rates;
 

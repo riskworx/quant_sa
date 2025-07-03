@@ -2,7 +2,7 @@
 using QuantSA.Core.MarketData;
 using QuantSA.Core.Serialization;
 using QuantSA.Shared.Dates;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 
 namespace QuantSA.Core.Tests.MarketData
 {

@@ -6,7 +6,7 @@ using QuantSA.Core.Primitives;
 using QuantSA.Core.Products.Rates;
 using QuantSA.Shared.Dates;
 using QuantSA.Shared.MarketData;
-using QuantSA.Solution.Test;
+using QuantSA.TestUtils;
 using QuantSA.Valuation.Models.Rates;
 
 namespace QuantSA.Valuation.Test
