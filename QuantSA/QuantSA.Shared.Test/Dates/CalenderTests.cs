@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace QuantSA.Shared.Test.Dates
 {
     [TestClass]
-    public class CalenderTests
+    public class CalendarTests
     {
         private Calendar _calendar;
         private Date _start;
@@ -18,7 +18,7 @@ namespace QuantSA.Shared.Test.Dates
         [TestInitialize]
         public void Setup()
         {
-            _calendar = new Calendar("TestCalender");
+            _calendar = new Calendar("TestCalendar");
             _start = new Date(2024, 6, 17);
             _end = new Date(2024, 6, 21);
 
