@@ -73,15 +73,16 @@ namespace QuantSA.Valuation.Models.Rates
 
         public override void RunSimulation(int simNumber)
         {
-            var W = _dist.Generate(_allDates.Count - 1);
-            _r = new double[_allDates.Count];
-            _bankAccount = new double[_allDates.Count];
+            var _allDatesList = _allDates.ToList();
+            var W = _dist.Generate(_allDatesList.Count - 1);
+            _r = new double[_allDatesList.Count];
+            _bankAccount = new double[_allDatesList.Count];
             _r[0] = _r0;
             _bankAccount[0] = 1;
 
-            for (int i = 0; i < _allDates.Count - 1; i++)
+            for (int i = 0; i < _allDatesList.Count - 1; i++)
             {
-                var dt = (_allDates[i + 1] - _allDates[i]) / 365.0;
+                var dt = (_allDatesList[i + 1] - _allDatesList[i]) / 365.0;
                 _r[i + 1] = _r[i] + _a * (_b - _r[i]) * dt + _sigma * Math.Sqrt(dt) * W[i];
                 _bankAccount[i + 1] = _bankAccount[i] * Math.Exp(_r[i] * dt);
             }
