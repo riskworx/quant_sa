@@ -16,8 +16,8 @@ namespace QuantSA.Core.Tests.CurvesAndSurfaces.InterpolationAdapters
             _xVals = new double[] { 1, 2, 3 };
             _yVals = new double[] { 10, 20, 30 };
         }
-        [TestMethod]
-        public void InterpolatedCurve_ReturnsValues_AsExpected()
+
+        [TestMethod] public void Interp_ReturnsExpectedValues()
         {
             var curve = new InterpolatedCurve(_xVals, _yVals);
 
@@ -27,7 +27,7 @@ namespace QuantSA.Core.Tests.CurvesAndSurfaces.InterpolationAdapters
         }
 
         [TestMethod]
-        public void InterpolatedCurve_ExtrapolatesLeft_ReturnsASExpected()
+        public void InterpolatedCurve_ExtrapolatesLeft_ReturnsAsExpected()
         {
             var curve = new InterpolatedCurve(_xVals, _yVals);
 
@@ -37,7 +37,7 @@ namespace QuantSA.Core.Tests.CurvesAndSurfaces.InterpolationAdapters
         }
 
         [TestMethod]
-        public void InterpolatedCurve_ExtrapolatesRight_ReturnsASExpected()
+        public void InterpolatedCurve_ExtrapolatesRight_ReturnsAsExpected()
         {
             var curve = new InterpolatedCurve(_xVals, _yVals);
 
