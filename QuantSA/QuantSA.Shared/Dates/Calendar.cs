@@ -84,7 +84,7 @@ namespace QuantSA.Shared.Dates
         }
 
         /// <summary>
-        /// last business day of the month to which the given date belongs
+        /// Last business day of the month to which the given date belongs
         /// </summary>
         public Date EndOfMonth(Date d)
         {
