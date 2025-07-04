@@ -21,7 +21,8 @@ namespace QuantSA.Valuation.Models.Rates
         private readonly Currency _currency;
 
         [JsonIgnore] private Date _anchorDate;
-        [JsonIgnore] private List<Date> _allDates;
+        //[JsonIgnore] private List<Date> _allDates;
+        [JsonIgnore] private SortedSet<Date> _allDates;
         [JsonIgnore] private double[] _allDatesDouble;
         [JsonIgnore] private double[] _r;
         [JsonIgnore] private double[] _bankAccount;
@@ -40,7 +41,7 @@ namespace QuantSA.Valuation.Models.Rates
 
         public override void Reset()
         {
-            _allDates = new List<Date>();
+            _allDates = new SortedSet<Date>();
         }
         /// <summary>
         /// Adds required dates for the given index to the model.
@@ -50,22 +51,20 @@ namespace QuantSA.Valuation.Models.Rates
         /// <param name="requiredDates">Dates to include in the simulation</param>
         public override void SetRequiredDates(MarketObservable index, List<Date> requiredDates)
         {
-            if (_allDates == null) _allDates = requiredDates;
-            else _allDates.AddRange(requiredDates);
+            if (_allDates == null) _allDates = new SortedSet<Date>(requiredDates);
+            else _allDates.UnionWith(requiredDates);
         }
 
         public override void SetNumeraireDates(List<Date> requiredDates)
         {
-            if (_allDates == null) _allDates = requiredDates;
-            else _allDates.AddRange(requiredDates);
+            if (_allDates == null) _allDates = new SortedSet<Date>(requiredDates);
+            else _allDates.UnionWith(requiredDates);
         }
 
         public override void Prepare(Date anchorDate)
         {
             _anchorDate = anchorDate;
-            _allDates.Insert(0, anchorDate);
-            _allDates = _allDates.Distinct().ToList();
-            _allDates.Sort();
+            _allDates.Add(anchorDate);
 
             _allDatesDouble = _allDates.Select(d => (double)d).ToArray();
             _dist = new NormalDistribution();
