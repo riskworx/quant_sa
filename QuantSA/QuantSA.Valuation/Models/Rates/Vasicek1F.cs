@@ -21,7 +21,6 @@ namespace QuantSA.Valuation.Models.Rates
         private readonly Currency _currency;
 
         [JsonIgnore] private Date _anchorDate;
-        //[JsonIgnore] private List<Date> _allDates;
         [JsonIgnore] private SortedSet<Date> _allDates;
         [JsonIgnore] private double[] _allDatesDouble;
         [JsonIgnore] private double[] _r;
