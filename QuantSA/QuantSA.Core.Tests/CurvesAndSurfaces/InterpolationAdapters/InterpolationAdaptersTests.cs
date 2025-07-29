@@ -17,17 +17,17 @@ namespace QuantSA.Core.Tests.CurvesAndSurfaces.InterpolationAdapters
             _yVals = new double[] { 10, 20, 30 };
         }
 
-        [TestMethod] public void Interp_ReturnsExpectedValues()
+        [TestMethod] public void ReturnsExpectedInterpolatedValue()
         {
             var curve = new InterpolatedCurve(_xVals, _yVals);
 
-            double valueAt1_5 = curve.Interp(1.5);
+            double result = curve.Interp(1.5);
 
-            Assert.AreEqual(15, valueAt1_5, 1e-10, "Interpolation failed");
+            Assert.AreEqual(15, result, 1e-10, "Interpolation failed");
         }
 
         [TestMethod]
-        public void InterpolatedCurve_ExtrapolatesLeft_ReturnsAsExpected()
+        public void ReturnsExpectedExtrapolatedValue()
         {
             var curve = new InterpolatedCurve(_xVals, _yVals);
 
