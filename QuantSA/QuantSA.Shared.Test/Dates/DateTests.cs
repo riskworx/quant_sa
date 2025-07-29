@@ -44,7 +44,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void EndOfMonth_WithMidMonthDate_ReturnsAsExpected()
+        public void ReturnsAsExpected()
         {
             var midMonth = new Date(2023, 3, 15);
             var endOfMonth = Date.EndOfMonth(midMonth);
