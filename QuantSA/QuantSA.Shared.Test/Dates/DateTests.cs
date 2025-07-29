@@ -5,7 +5,7 @@ using System;
 namespace QuantSA.Shared.Test.Dates
 {
     [TestClass]
-    public class DateTest
+    public class DateTests
     {
         private Date _date;
 
