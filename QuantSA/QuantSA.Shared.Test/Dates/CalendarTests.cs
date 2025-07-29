@@ -122,7 +122,7 @@ namespace QuantSA.Shared.Test.Dates
         }
 
         [TestMethod]
-        public void Constructor_WithHolidays_ReturnsExpected()
+        public void ReturnsExpectedValue()
         {
             var holidays = new List<Date>
             {
