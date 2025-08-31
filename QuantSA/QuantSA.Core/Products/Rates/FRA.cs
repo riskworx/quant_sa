@@ -92,5 +92,10 @@ namespace QuantSA.Core.Products.Rates
             if (!_payFixed) amount = -1.0 * amount;
             return new List<Cashflow> {new Cashflow(_nearDate, amount, _floatIndex.Currency) };
         }
+
+        public List<Cashflow> GetCFs(Date valueDate)
+        {
+            return _nearDate > valueDate ? GetCFs() : new List<Cashflow>();
+        }
     }
 }
