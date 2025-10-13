@@ -3,7 +3,7 @@ using System.Text;
 
 namespace QuantSA.Shared.Dates
 {
-    public class Tenor
+    public readonly struct Tenor
     {
         /// <summary>
         /// A tenor from a string.  Tenor string must be in decreasing order of tenor types, e.g. 1Y2D is OK but
@@ -12,6 +12,12 @@ namespace QuantSA.Shared.Dates
         /// <param name="tenorStr"></param>
         public Tenor(string tenorStr)
         {
+            // Initialize all fields to 0 (required for structs)
+            Years = 0;
+            Months = 0;
+            Weeks = 0;
+            Days = 0;
+
             var rest = tenorStr;
             var parts = rest.Split('Y');
             if (parts.Length > 1)
@@ -48,10 +54,10 @@ namespace QuantSA.Shared.Dates
             Years = years;
         }
 
-        public int Days { get; }
-        public int Months { get; }
-        public int Weeks { get; }
-        public int Years { get; }
+        public readonly int Days { get; }
+        public readonly int Months { get; }
+        public readonly int Weeks { get; }
+        public readonly int Years { get; }
 
         public static Tenor FromYears(int years)
         {
@@ -82,9 +88,6 @@ namespace QuantSA.Shared.Dates
 
         public static bool operator ==(Tenor left, Tenor right)
         {
-            if ((object) left == null && (object) right == null) return true;
-            if ((object) left != null && (object) right == null) return false;
-            if ((object) left == null && (object) right != null) return false;
             return left.Days + 7 * left.Weeks == right.Days + 7 * right.Weeks &&
                    left.Months + 12 * left.Years == right.Months + 12 * right.Years;
         }
