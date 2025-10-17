@@ -90,14 +90,68 @@ namespace QuantSA.Valuation.Models.Rates
 
 
         /// <summary>
-        /// 
+        /// Initializes a new instance of the Hull-White one-factor model with specified model parameters, 
+        /// market data, and simulation setup. The constructor stores the structural parameters (a, vol) 
+        /// that define the short rate stochastic differential equation, the initial conditions (r0, inputRate), 
+        /// the numeraire currency, and the forward rate indices to be simulated.
         /// </summary>
-        /// <param name="currency"></param>
-        /// <param name="a"></param>
-        /// <param name="vol"></param>
-        /// <param name="r0"></param>
-        /// <param name="inputRate">the flat continuously compounded rate that is fitted to.</param>
-        /// <param name="floatRateIndices"></param>
+        /// <param name="currency">The currency for the numeraire (bank account) and discount curve. All simulated 
+        /// rates and cash flows will be denominated in this currency.</param>
+        /// <param name="a">The mean reversion speed parameter in the Hull-White SDE. Higher values (e.g., a > 0.1) 
+        /// cause the short rate to revert more quickly to the long-term level determined by theta(t). Typical range 
+        /// is 0.01 to 0.5 for interest rate models.</param>
+        /// <param name="vol">The short rate volatility parameter (annualized) in the Hull-White SDE. Controls the 
+        /// magnitude of random fluctuations in r(t). Higher volatility produces wider distributions of future rates. 
+        /// Typical range is 0.005 to 0.02 (50bps to 200bps) for developed market interest rates.</param>
+        /// <param name="r0">The initial short rate r(0) at the anchor/valuation date. This is the starting value 
+        /// for the short rate simulation and should be consistent with the current market level (often set equal 
+        /// to the instantaneous forward rate at t=0).</param>
+        /// <param name="inputRate">The flat continuously compounded rate that the model fits to in the current 
+        /// implementation. This rate defines the initial term structure P(0,T) = exp(-inputRate * T) and is used 
+        /// to calibrate the deterministic shift theta(t). In future extensions, this could be replaced by a full 
+        /// term structure of forward rates.</param>
+        /// <param name="floatRateIndices">Optional array of <see cref="FloatRateIndex"/> objects representing 
+        /// the floating rate indices to simulate (e.g., 3M LIBOR, 3M JIBAR, 6M EURIBOR). The model will generate 
+        /// forward rate fixings for these indices on demand. Pass null or omit for models that only need to 
+        /// simulate the numeraire.</param>
+        /// <remarks>
+        /// <para>
+        /// The Hull-White model simulates the short rate r(t) according to the stochastic differential equation:
+        /// <br/>
+        /// dr(t) = [theta(t) - a * r(t)] dt + vol * dW(t)
+        /// </para>
+        /// <para>
+        /// where theta(t) is a deterministic time-dependent function calibrated internally to match the input 
+        /// term structure. The constructor stores the parameters (a, vol, r0, inputRate) but does not perform 
+        /// calibration or simulation; this happens later when <see cref="Prepare"/> and <see cref="RunSimulation"/> 
+        /// are called.
+        /// </para>
+        /// <para>
+        /// In the current implementation, <paramref name="inputRate"/> represents a flat term structure where 
+        /// the instantaneous forward rate f(0,t) = inputRate for all t. The time-dependent shift theta(t) is 
+        /// computed analytically as:
+        /// <br/>
+        /// theta(t) = a * f(0,t) + (vol^2 / 2a) * (1 - exp(-2*a*t))
+        /// </para>
+        /// <para>
+        /// This ensures that the model reproduces the input discount curve P(0,T) = exp(-inputRate * T) exactly 
+        /// when expectations are taken. For production use with realistic market curves, <paramref name="inputRate"/> 
+        /// could be replaced by a term structure interpolation object, requiring minimal changes to the theta(t) 
+        /// calculation.
+        /// </para>
+        /// <para>
+        /// Parameter Selection Guidelines:
+        /// <list type="bullet">
+        /// <item><description>Choose <paramref name="a"/> based on historical mean reversion or calibration to 
+        /// swaption volatilities. Higher values reduce path dependency.</description></item>
+        /// <item><description>Calibrate <paramref name="vol"/> to at-the-money cap/swaption implied volatilities.</description></item>
+        /// <item><description>Set <paramref name="r0"/> to the current short rate or instantaneous forward rate 
+        /// f(0,0) extracted from the yield curve.</description></item>
+        /// <item><description>Set <paramref name="inputRate"/> to the current overnight rate or extract from 
+        /// the discount curve at t=0.</description></item>
+        /// </list>
+        /// </para>
+        /// </remarks>
         public HullWhite1F(Currency currency, double a, double vol, double r0, double inputRate,
             IEnumerable<FloatRateIndex> floatRateIndices = null)
         {
