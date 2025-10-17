@@ -135,6 +135,56 @@ namespace QuantSA.Valuation.Models.Rates
             Generator.Seed = -1585814591; // This magic number is: "HW1FSimulator".GetHashCode();
         }
 
+        /// <summary>
+        /// Executes a single Monte Carlo path simulation using the Euler-Maruyama discretization scheme
+        /// to generate the short rate process and numeraire (bank account) values along the simulation timeline.
+        /// </summary>
+        /// <param name="simNumber">The simulation path identifier, used as a random seed or path index for reproducible path generation.</param>
+        /// <remarks>
+        /// <para>
+        /// This method implements the Euler-Maruyama discretization of the Hull-White short rate SDE.
+        /// The discrete-time update scheme for the short rate r is:
+        /// </para>
+        /// <para>
+        /// r[i+1] = r[i] + [theta(t[i]) - a*r[i]]*dt + vol*sqrt(dt)*Z[i]
+        /// </para>
+        /// <para>
+        /// where Z[i] ~ N(0,1) are independent standard normal random variables (stored in W array in code).
+        /// </para>
+        /// <para>
+        /// This discretization approximates the continuous-time stochastic differential equation:
+        /// </para>
+        /// <para>
+        /// dr(t) = [theta(t) - a*r(t)]*dt + vol*dW(t)
+        /// </para>
+        /// <para>
+        /// where theta(t) is the time-dependent drift term (obtained from the Theta method), a is the mean
+        /// reversion speed (_a), vol is the volatility (_vol), and dW(t) is the increment of a standard
+        /// Brownian motion.
+        /// </para>
+        /// <para>
+        /// The bank account (numeraire) B evolves according to:
+        /// </para>
+        /// <para>
+        /// B[i+1] = B[i] * exp(r[i] * dt)
+        /// </para>
+        /// <para>
+        /// where dt is the time step size in years between consecutive dates.
+        /// </para>
+        /// <para>
+        /// Initial conditions are r[0] = _r0 (initial short rate) and B[0] = 1 (unit numeraire at anchor date).
+        /// </para>
+        /// <para>
+        /// The time discretization uses a minimum step size of 20 days (set in the Prepare method) to control
+        /// discretization errors. This ensures the Euler-Maruyama scheme provides accurate approximations of
+        /// the continuous-time process.
+        /// </para>
+        /// <para>
+        /// The complete paths are stored in the _r array (short rate values) and _bankAccount array (numeraire values)
+        /// for all dates in _allDates. These stored paths are subsequently accessed by query methods such as
+        /// GetIndices (for forward rate extraction) and Numeraire (for numeraire value retrieval).
+        /// </para>
+        /// </remarks>
         public override void RunSimulation(int simNumber)
         {
             var W = _dist.Generate(_allDates.Count - 1);
