@@ -11,8 +11,58 @@ using QuantSA.Shared.Primitives;
 
 namespace QuantSA.Valuation.Models.Rates
 {
+    /// <summary>
+    /// Delegate for the market discount factor function P^M(0,t), which represents the price 
+    /// at time 0 (valuation date) of a zero-coupon bond maturing at time t.
+    /// </summary>
+    /// <param name="date">The date for computing the discount factor from the valuation date.</param>
+    /// <returns>
+    /// The market zero-coupon bond price from the valuation date (time 0) to the specified date.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This delegate is used in the <see cref="BondPrice"/> calculation to construct the A(t,T) term,
+    /// specifically appearing as P^M(0,T) / P^M(0,t) in the analytical bond pricing formula.
+    /// </para>
+    /// <para>
+    /// Current implementation: The default initialization uses a flat curve with 
+    /// <c>exp(-_inputRate * t)</c>, where t is the time in years from the valuation date.
+    /// This represents a constant continuously compounded interest rate term structure.
+    /// </para>
+    /// <para>
+    /// Extensibility: This delegate can be extended to handle full term structures by providing
+    /// a more sophisticated discount curve that reflects market-observed bond prices or 
+    /// bootstrapped zero rates across different maturities.
+    /// </para>
+    /// </remarks>
     public delegate double MarketBonds(Date date);
 
+    /// <summary>
+    /// Delegate for the market instantaneous forward rate function f^M(0,t), which represents 
+    /// the instantaneous forward rate observed at time 0 for instantaneous borrowing at time t.
+    /// </summary>
+    /// <param name="date">The date at which to evaluate the instantaneous forward rate.</param>
+    /// <returns>
+    /// The market instantaneous forward rate at the specified date.
+    /// </returns>
+    /// <remarks>
+    /// <para>
+    /// This delegate is used in the <see cref="Theta"/> calculation to determine the drift term
+    /// that calibrates the Hull-White model to the input term structure. The Theta function
+    /// incorporates f^M(0,t) to ensure that the model-implied forward rates match the market
+    /// forward rates, maintaining consistency with the input discount curve.
+    /// </para>
+    /// <para>
+    /// Current implementation: The default initialization uses a constant <c>_inputRate</c>,
+    /// representing a flat forward rate curve. This is consistent with the flat discount curve
+    /// assumption where all forward rates equal the spot rate.
+    /// </para>
+    /// <para>
+    /// Extensibility: This delegate can be extended to handle full term structures by computing
+    /// the instantaneous forward rate from a full discount curve, typically as 
+    /// f^M(0,t) = -d/dt[ln(P^M(0,t))], allowing the model to fit arbitrary market term structures.
+    /// </para>
+    /// </remarks>
     public delegate double MarketForwards(Date date);
 
     /// <summary>
