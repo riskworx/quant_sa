@@ -97,13 +97,44 @@ namespace QuantSA.Valuation.Models.Rates
 
 
         /// <summary>
-        /// Forward zero coupon bond price between <paramref name="date1"/> and <paramref name="date2"/> given
-        /// that <paramref name="r"/> has been observed at <paramref name="date1"/>
+        /// Computes the forward zero-coupon bond price P(t,T;r(t)) using the analytical solution
+        /// in the Hull-White one-factor model. This method leverages the affine structure of the
+        /// Hull-White framework to obtain closed-form bond prices from the current short rate.
         /// </summary>
-        /// <param name="r"></param>
-        /// <param name="date1"></param>
-        /// <param name="date2"></param>
-        /// <returns></returns>
+        /// <param name="r">The short rate r(t) observed at the current time date1.</param>
+        /// <param name="date1">The current time t in the pricing formula.</param>
+        /// <param name="date2">The maturity time T of the zero-coupon bond.</param>
+        /// <returns>The zero-coupon bond price P(t,T;r(t)) at time t maturing at time T, conditional on the short rate r(t).</returns>
+        /// <remarks>
+        /// The Hull-White model exhibits an affine term structure, meaning bond prices have the exponential-affine form:
+        /// <para>
+        ///     P(t,T;r(t)) = A(t,T) * exp(-B(t,T) * r(t))
+        /// </para>
+        /// where the coefficient functions B(t,T) and A(t,T) are deterministic and given by:
+        /// <para>
+        ///     B(t,T) = (1/a) * (1 - exp(-a*(T-t)))
+        /// </para>
+        /// <para>
+        ///     A(t,T) = [P^M(0,T) / P^M(0,t)] * exp(B(t,T)*f^M(0,t) - (vol^2)/(4*a)*B(t,T)^2*(1-exp(-2*a*t)))
+        /// </para>
+        /// Here, a is the mean reversion parameter, vol is the volatility, P^M(0,t) are market discount factors, 
+        /// and f^M(0,t) is the instantaneous forward rate from the initial market curve.
+        /// <para>
+        /// The affine structure is the key property that enables analytical bond pricing in the Hull-White model.
+        /// Because bond prices depend exponentially on the short rate (with deterministic coefficients), we can
+        /// compute exact prices without numerical integration or approximation. This analytical tractability extends
+        /// to options on bonds (swaptions) and other interest rate derivatives.
+        /// </para>
+        /// <para>
+        /// This formula is derived from the fundamental pricing equation and appears as Equation 3.39 in 
+        /// Brigo &amp; Mercurio, "Interest Rate Models - Theory and Practice", 2nd edition.
+        /// </para>
+        /// <para>
+        /// Within the simulation framework, this method is called to extract forward rates from simulated short rate 
+        /// paths. Given a simulated value of r(t), we compute P(t,T) for the appropriate tenor, then back out the 
+        /// forward rate using the relationship: forward rate = 365 * (1/P(t,T) - 1) / (T-t).
+        /// </para>
+        /// </remarks>
         private double BondPrice(double r, Date date1, Date date2)
         {
             // Equation 3.39 in Brigo Mercurio 2nd edition:
