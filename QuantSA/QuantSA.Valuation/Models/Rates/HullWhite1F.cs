@@ -59,6 +59,36 @@ namespace QuantSA.Valuation.Models.Rates
             _currency = currency;
         }
 
+        /// <summary>
+        /// Computes the time-dependent drift term theta(t) that calibrates the Hull-White model to match
+        /// the input term structure of interest rates.
+        /// </summary>
+        /// <param name="date">The date representing the time point t for evaluating theta(t).</param>
+        /// <returns>The calibrated drift term theta(t) at the specified time point.</returns>
+        /// <remarks>
+        /// The drift term is given by the formula:
+        /// <para/>
+        /// theta(t) = a * f^M(0,t) + (vol^2)/(2*a) * (1 - exp(-2*a*t))
+        /// <para/>
+        /// where f^M(0,t) is the market instantaneous forward rate at time t as seen from time 0.
+        /// <para/>
+        /// In the current implementation, the market forward rate curve is flat, meaning f^M(0,t)
+        /// is constant and equal to the _inputRate field for all t. This corresponds to a flat
+        /// continuously compounded zero curve.
+        /// <para/>
+        /// The theta(t) function serves a crucial calibration purpose: it ensures that the Hull-White
+        /// model produces zero-coupon bond prices P^HW(0,T) that exactly match the market bond prices
+        /// P^Market(0,T) for all maturities T. This calibration to the initial term structure is
+        /// automatic and does not require numerical optimization.
+        /// <para/>
+        /// Code variable mapping:
+        /// - a (mean reversion speed): _a field
+        /// - vol (volatility): _vol field
+        /// - f^M(0,t) (market forward rate): _fM delegate, which returns _inputRate
+        /// - t (time in years): (date - _anchorDate) / 365.0
+        /// <para/>
+        /// Reference: Brigo &amp; Mercurio, "Interest Rate Models - Theory and Practice", Section 3.3.1
+        /// </remarks>
         private double Theta(Date date)
         {
             var t = (date - _anchorDate) / 365.0;
