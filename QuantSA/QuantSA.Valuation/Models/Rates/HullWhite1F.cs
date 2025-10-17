@@ -105,10 +105,44 @@ namespace QuantSA.Valuation.Models.Rates
         }
 
         /// <summary>
-        /// Add extra dates to make sure that the minimum spacing is not too large to make the Monte Carlo errors bad.
-        /// <para/>
-        /// At this point the dates are all copied.
+        /// Performs the final pre-simulation setup step, preparing the model for Monte Carlo simulation 
+        /// by consolidating all required dates, adding interpolation dates, and initializing market functions.
         /// </summary>
+        /// <param name="anchorDate">The valuation date and simulation start date from which all time calculations 
+        /// are measured. This is the reference point (t=0) for the Hull-White model.</param>
+        /// <remarks>
+        /// This method must be called after all dates have been registered via <see cref="SetRequiredDates"/> 
+        /// and <see cref="SetNumeraireDates"/>, but before <see cref="RunSimulation"/>. It performs the following 
+        /// setup operations:
+        /// <para/>
+        /// <b>Date Merging and Sorting:</b> Combines all dates registered from SetRequiredDates and SetNumeraireDates, 
+        /// removes duplicates, and sorts them chronologically with the anchorDate at position zero. This creates the 
+        /// base timeline for simulation.
+        /// <para/>
+        /// <b>Interpolation Date Insertion:</b> Adds intermediate dates between existing dates when gaps exceed 20 days. 
+        /// The 20-day minimum step size controls discretization error in the Euler scheme used by RunSimulation, 
+        /// ensuring that the continuous-time Hull-White SDE is approximated with sufficient accuracy. Larger steps 
+        /// would increase Monte Carlo discretization bias.
+        /// <para/>
+        /// <b>Market Function Initialization:</b> Initializes the forward rate function _fM and discount factor 
+        /// function _pm. In the current implementation, _fM returns a flat rate equal to _inputRate for any date, 
+        /// and _pm returns exp(-_inputRate * t) where t is time in years from anchorDate. These functions can be 
+        /// extended to support full term structure curves.
+        /// <para/>
+        /// <b>Array Allocation Framework:</b> Sets up the _allDates array containing the complete simulation timeline. 
+        /// This array determines the size for _r (short rate path) and _bankAccount (numeraire path) arrays that will 
+        /// be allocated in RunSimulation based on _allDates.Count.
+        /// <para/>
+        /// <b>Complete Simulation Timeline:</b> The _allDates array holds all simulation dates in chronological order, 
+        /// including the anchorDate, all required dates from products and numeraire calculations, and all interpolated 
+        /// dates. This timeline is stored both as Date objects (_allDates) and as double values (_allDatesDouble) for 
+        /// efficient interpolation during simulation.
+        /// <para/>
+        /// <b>Method Sequencing:</b> The simulator lifecycle requires this ordering: (1) Reset clears previous state, 
+        /// (2) SetRequiredDates and SetNumeraireDates register all needed dates, (3) Prepare consolidates dates and 
+        /// initializes functions, (4) RunSimulation executes the Monte Carlo path generation. Calling Prepare before 
+        /// dates are registered or calling RunSimulation before Prepare will produce incorrect results.
+        /// </remarks>
         public override void Prepare(Date anchorDate)
         {
             _anchorDate = anchorDate;
