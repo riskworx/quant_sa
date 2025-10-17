@@ -196,11 +196,28 @@ namespace QuantSA.Valuation.Models.Rates
             return A * Math.Exp(-B * r);
         }
 
+        /// <summary>
+        /// Clears all stored simulation dates to prepare the model for reuse.
+        /// </summary>
+        /// <remarks>
+        /// This method allows the simulator to be reconfigured with new dates without creating a new instance.
+        /// It is the first step in the date management lifecycle: Reset → SetRequiredDates/SetNumeraireDates → Prepare → RunSimulation.
+        /// </remarks>
         public override void Reset()
         {
             _allDates = new List<Date>();
         }
 
+        /// <summary>
+        /// Registers dates where a specific market observable will be queried during simulation.
+        /// </summary>
+        /// <param name="index">The market observable (typically a <see cref="FloatRateIndex"/>) to track.</param>
+        /// <param name="requiredDates">List of dates where this index is needed for valuation.</param>
+        /// <remarks>
+        /// The simulator collects all required dates from multiple calls to this method to build a complete simulation timeline.
+        /// These dates are sorted and merged with numeraire dates during the <see cref="Prepare"/> call.
+        /// This method can be called multiple times for different indices or with additional dates for the same index.
+        /// </remarks>
         public override void SetRequiredDates(MarketObservable index, List<Date> requiredDates)
         {
             if (_allDates == null) _allDates = requiredDates;
@@ -208,6 +225,15 @@ namespace QuantSA.Valuation.Models.Rates
                 _allDates.AddRange(requiredDates);
         }
 
+        /// <summary>
+        /// Registers dates where numeraire (money market account) values are required.
+        /// </summary>
+        /// <param name="requiredDates">Dates where <see cref="Numeraire"/> will be called during valuation.</param>
+        /// <remarks>
+        /// The numeraire represents the bank account value B(t) = exp(integral_0^t r(s)ds), where r(s) is the short rate process.
+        /// Numeraire values are needed for discounting payoffs to present value in Monte Carlo valuation.
+        /// These dates are merged with index observation dates during the <see cref="Prepare"/> call to create the complete simulation timeline.
+        /// </remarks>
         public override void SetNumeraireDates(List<Date> requiredDates)
         {
             if (_allDates == null) _allDates = requiredDates;
