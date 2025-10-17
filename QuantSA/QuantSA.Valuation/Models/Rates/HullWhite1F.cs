@@ -278,17 +278,67 @@ namespace QuantSA.Valuation.Models.Rates
             return result;
         }
 
+        /// <summary>
+        /// Returns the short rate r(t) at the specified date for use in regression-based valuation algorithms.
+        /// </summary>
+        /// <param name="date">The date at which to query the short rate r(t).</param>
+        /// <returns>
+        /// An array containing a single element with the value of the short rate r(t) at the specified date.
+        /// </returns>
+        /// <remarks>
+        /// This method is primarily used in Longstaff-Schwartz regression algorithms where the short rate
+        /// serves as the state variable for computing continuation values. The short rate r(t) represents
+        /// the instantaneous risk-free rate and is the fundamental state variable in the Hull-White model.
+        /// </remarks>
         public override double[] GetUnderlyingFactors(Date date)
         {
             var rt = Tools.Interpolate1D(date.value, _allDatesDouble, _r, _r[0], _r[_r.Length - 1]);
             return new[] {rt};
         }
 
+        /// <summary>
+        /// Returns the currency of the numeraire (money market account).
+        /// </summary>
+        /// <returns>
+        /// The <see cref="Currency"/> object representing the currency in which the numeraire is denominated.
+        /// </returns>
+        /// <remarks>
+        /// All cash flows being valued must be denominated in this currency for the valuation to be valid.
+        /// The numeraire provides the unit of account for risk-neutral pricing in this currency.
+        /// </remarks>
         public override Currency GetNumeraireCurrency()
         {
             return _currency;
         }
 
+        /// <summary>
+        /// Returns the value of the money market account B(t) at the specified date.
+        /// </summary>
+        /// <param name="valueDate">The date at which to query the money market account value B(t).</param>
+        /// <returns>
+        /// The value of the bank account B(t) = exp(integral from 0 to t of r(s)ds), where r(s) is the 
+        /// short rate process. By construction, B(0) = 1.
+        /// </returns>
+        /// <remarks>
+        /// <para>
+        /// The numeraire is a fundamental concept in risk-neutral pricing. It represents the value of a 
+        /// bank account that continuously compounds at the risk-free short rate r(t). In the Hull-White 
+        /// model, this is the money market account.
+        /// </para>
+        /// <para>
+        /// A key property of the numeraire is the martingale property: when any payoff is divided by 
+        /// B(t), the resulting process is a martingale under the risk-neutral measure. This property 
+        /// underpins the risk-neutral valuation framework where the expected value (under the risk-neutral 
+        /// measure) of a payoff X(T) discounted by the numeraire equals its present value: 
+        /// V(0) = E[X(T)/B(T)] * B(0).
+        /// </para>
+        /// <para>
+        /// The computation method used here is iterative during the <see cref="RunSimulation"/> method, 
+        /// where the bank account is updated at each time step via the recursion: 
+        /// B[i+1] = B[i] * exp(r[i] * dt). This provides a discrete-time approximation to the continuous 
+        /// integral formula above.
+        /// </para>
+        /// </remarks>
         public override double Numeraire(Date valueDate)
         {
             if (valueDate < _anchorDate)
@@ -298,6 +348,19 @@ namespace QuantSA.Valuation.Models.Rates
             return Tools.Interpolate1D(valueDate, _allDatesDouble, _bankAccount, 1, _bankAccount.Last());
         }
 
+        /// <summary>
+        /// Checks if this simulator can provide values for the specified market observable.
+        /// </summary>
+        /// <param name="index">The market observable to check.</param>
+        /// <returns>
+        /// True if the specified index was registered with this simulator via <see cref="AddForecast"/>, 
+        /// false otherwise.
+        /// </returns>
+        /// <remarks>
+        /// This method is used by the simulation coordinator to determine which simulator should handle
+        /// queries for a particular market observable. The coordinator routes index queries to the 
+        /// appropriate simulator based on the results of this method.
+        /// </remarks>
         public override bool ProvidesIndex(MarketObservable index)
         {
             return _floatRateIndices.Contains(index);
