@@ -66,9 +66,112 @@ namespace QuantSA.Valuation.Models.Rates
     public delegate double MarketForwards(Date date);
 
     /// <summary>
-    /// A single factor Hull White simulator.  It can simulate a numeraire and any number of
-    /// forward rates off the same curve.
+    /// A single-factor Hull-White short rate model simulator for Monte Carlo valuation of 
+    /// interest rate derivatives.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    /// The Hull-White one-factor model (also known as the extended Vasicek model) describes the 
+    /// evolution of the instantaneous short rate r(t) under the risk-neutral measure through 
+    /// the following stochastic differential equation (SDE):
+    /// </para>
+    /// <para>
+    ///     dr(t) = [theta(t) - a*r(t)]*dt + vol*dW(t)
+    /// </para>
+    /// <para>
+    /// where W(t) is a standard Brownian motion under the risk-neutral measure.
+    /// </para>
+    /// 
+    /// <para><b>Model Characteristics</b></para>
+    /// <para>
+    /// The Hull-White model is a mean-reverting short rate model belonging to the affine term 
+    /// structure class. The mean-reverting property ensures that extreme interest rate values 
+    /// are pulled back toward a time-varying central tendency, preventing unbounded growth or 
+    /// negative explosions. The affine structure means that zero-coupon bond prices are exponential 
+    /// affine functions of the short rate, enabling closed-form solutions for bond prices and 
+    /// European-style derivatives.
+    /// </para>
+    /// 
+    /// <para><b>Parameters and Their Interpretations</b></para>
+    /// <para>
+    /// <b>a</b> (mean reversion speed): Controls how quickly the short rate reverts to its 
+    /// mean level. Higher values of 'a' lead to faster mean reversion and shorter memory of 
+    /// past shocks. Typical values range from 0.01 to 0.5 (annualized). When a = 0, the model 
+    /// reduces to the Ho-Lee model with no mean reversion.
+    /// </para>
+    /// <para>
+    /// <b>vol</b> (short rate volatility): The instantaneous volatility of the short rate, 
+    /// expressed in absolute terms (e.g., 0.01 for 100 basis points). This parameter controls 
+    /// the width of the distribution of future short rates. Higher volatility increases option 
+    /// values but also the likelihood of negative interest rates, which is a known limitation 
+    /// of the model.
+    /// </para>
+    /// <para>
+    /// <b>theta(t)</b> (time-dependent drift): A deterministic function of time that ensures 
+    /// the model fits exactly to the observed initial term structure of interest rates. 
+    /// Mathematically, theta(t) is calibrated so that the model-implied discount curve matches 
+    /// the market discount curve at time zero. The function theta(t) absorbs all the information 
+    /// about the initial yield curve shape, allowing the model to be consistent with market 
+    /// prices while 'a' and 'vol' control the future dynamics.
+    /// </para>
+    /// 
+    /// <para><b>Current Implementation</b></para>
+    /// <para>
+    /// This implementation fits the model to a flat continuously compounded interest rate curve, 
+    /// which is a simplification for practical convenience. In this case, theta(t) is derived 
+    /// analytically from the flat input rate. The implementation can be extended to fit a full 
+    /// term structure by providing a more general curve object and calibrating theta(t) 
+    /// accordingly. The flat curve assumption means that all discount factors are computed as 
+    /// exp(-inputRate * T) where T is the time to maturity.
+    /// </para>
+    /// 
+    /// <para><b>Theory-to-Code Mapping</b></para>
+    /// <para>
+    /// This class inherits from <see cref="NumeraireSimulator"/> and implements Monte Carlo 
+    /// simulation of the Hull-White model. The correspondence between mathematical notation 
+    /// and code is as follows:
+    /// </para>
+    /// <list type="bullet">
+    /// <item><description>
+    /// The short rate r(t) is simulated and stored in the <c>_r</c> array across all simulation 
+    /// time steps.
+    /// </description></item>
+    /// <item><description>
+    /// The bank account (numeraire) B(t) = exp(integral from 0 to t of r(s)ds) is computed and 
+    /// stored in the <c>_bankAccount</c> array. This represents the value of a risk-free money 
+    /// market account.
+    /// </description></item>
+    /// <item><description>
+    /// The mean reversion speed parameter 'a' is stored in <c>_a</c>.
+    /// </description></item>
+    /// <item><description>
+    /// The volatility parameter 'vol' is stored in <c>_vol</c>.
+    /// </description></item>
+    /// <item><description>
+    /// The time-dependent drift theta(t) is computed in the <see cref="Theta"/> method using 
+    /// the calibration formula that ensures fit to the input term structure.
+    /// </description></item>
+    /// <item><description>
+    /// Zero-coupon bond prices are computed using the closed-form formula in the 
+    /// <see cref="BondPrice"/> method (Equation 3.39 in the reference below).
+    /// </description></item>
+    /// <item><description>
+    /// Forward rate indices (LIBOR-like rates) are computed from bond prices using the standard 
+    /// relationship: F(t,T1,T2) = (P(t,T1)/P(t,T2) - 1) * (day_count / (T2-T1)).
+    /// </description></item>
+    /// </list>
+    /// 
+    /// <para><b>Reference</b></para>
+    /// <para>
+    /// For a comprehensive treatment of the Hull-White model, including derivations of bond 
+    /// pricing formulas, calibration procedures, and extensions, see:
+    /// </para>
+    /// <para>
+    /// Brigo, D., and Mercurio, F. (2006). <i>Interest Rate Models - Theory and Practice: 
+    /// With Smile, Inflation and Credit</i> (2nd ed.). Springer Finance. Chapter 3: 
+    /// One-factor short-rate models.
+    /// </para>
+    /// </remarks>
     /// <seealso cref="NumeraireSimulator" />
     public class HullWhite1F : NumeraireSimulator
     {
@@ -564,6 +667,23 @@ namespace QuantSA.Valuation.Models.Rates
             return _floatRateIndices.Contains(index);
         }
 
+        /// <summary>
+        /// Registers a forward rate index for simulation, such as 3M JIBAR or 3M LIBOR.
+        /// </summary>
+        /// <param name="index">The FloatRateIndex object to add (e.g., FloatRateIndex representing 3M JIBAR).</param>
+        /// <remarks>
+        /// This method allows multiple forward rate indices to be registered with the Hull-White model for simulation.
+        /// After indices are registered, they are simulated alongside the short rate process when <see cref="RunSimulation"/> is called.
+        /// <para/>
+        /// The forward rates are extracted from the simulated short rate r(t) using the analytical bond pricing formula
+        /// described in Brigo and Mercurio (see <see cref="BondPrice"/>). Specifically, for a given observation date and tenor,
+        /// the model calculates the zero-coupon bond price P(t, T) and derives the forward rate as: rate = 365 * (1/P(t,T) - 1) / (T - t).
+        /// <para/>
+        /// Multiple indices can be added by calling this method repeatedly. There is no limit on the number of indices that can be registered.
+        /// Once registered, indices can be queried after simulation via the <see cref="GetIndices"/> method.
+        /// <para/>
+        /// Typical workflow: Registration (AddForecast) → Simulation setup (Reset, SetRequiredDates, Prepare) → Simulation (RunSimulation) → Query (GetIndices).
+        /// </remarks>
         public void AddForecast(FloatRateIndex index)
         {
             if (_floatRateIndices == null) _floatRateIndices = new List<FloatRateIndex>();
